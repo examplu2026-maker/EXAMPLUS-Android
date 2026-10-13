@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download project
+      - name: Download EXAMPLUS project
         uses: actions/checkout@v4
 
       - name: Set up Java
@@ -26,10 +26,15 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Install Android SDK components
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
 
-      - name: Build APK
+      - name: Build EXAMPLUS APK
         run: gradle assembleDebug
 
       - name: Upload EXAMPLUS APK
@@ -37,3 +42,4 @@ jobs:
         with:
           name: EXAMPLUS-Android
           path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
